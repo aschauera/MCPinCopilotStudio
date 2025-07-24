@@ -140,12 +140,8 @@ async def geocode_location(location: str) -> str:
     result = data[0]
     latitude = float(result["lat"])
     longitude = float(result["lon"])
-    display_name = result.get("display_name", location)
     
-    return f"""Location: {display_name}
-Latitude: {latitude}
-Longitude: {longitude}
-Coordinates: {latitude}, {longitude}"""
+    return f"{latitude:.3f}, {longitude:.3f}"
 
 @mcp.tool()
 async def get_aviation_weather(icao_code: str) -> str:
