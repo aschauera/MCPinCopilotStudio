@@ -1,0 +1,3 @@
+markitdown[all]
+mcp[cli]
+requests
