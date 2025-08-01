@@ -1,0 +1,72 @@
+swagger: '2.0'
+info:
+  title: Weather MCP
+  description: A sample MCP server for US weather info and forecasts
+  version: '1.0'
+host: aschi-weather-mcp.wittyglacier-6d770dc4.westeurope.azurecontainerapps.io
+basePath: /
+schemes:
+  - https
+consumes: []
+produces: []
+paths:
+  /sse:
+    get:
+      summary: US Weather MCP
+      x-ms-agentic-protocol: mcp-sse-1.0
+      operationId: InvokeMCP
+      responses:
+        '200':
+          description: Success
+      tags:
+        - Agentic
+        - McpSse
+    post:
+      summary: MCP SSE Action
+      operationId: PostInvokeMCP
+      x-ms-agentic-origin-operation: InvokeMCP
+      x-ms-visibility: internal
+      parameters:
+        - in: header
+          name: route
+          type: string
+          required: true
+        - in: body
+          name: requestBody
+          schema:
+            $ref: '#/definitions/McpSseQueryResponse'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Immediate Response
+          schema:
+            $ref: '#/definitions/McpSseQueryResponse'
+        '201':
+          description: Created and will follow callback
+definitions:
+  McpSseQueryResponse:
+    type: object
+    properties:
+      jsonrpc:
+        type: string
+      id:
+        type: string
+      method:
+        type: string
+      params:
+        type: object
+      result:
+        type: object
+      error:
+        type: object
+parameters: {}
+responses: {}
+securityDefinitions:
+  api_key:
+    type: apiKey
+    in: header
+    name: x-api-key
+security:
+  - api_key: []
+tags: []
